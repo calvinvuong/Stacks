@@ -1,3 +1,8 @@
+// Team -- Alan Chen and Calvin Vuong
+// APCS2 pd10
+// HW24 -- Schemin
+// 2016-04-04
+
 /*****************************************************
  * class Scheme
  * Simulates a rudimentary Scheme interpreter
@@ -22,24 +27,21 @@ public class Scheme {
      *           evaluate( "( + 4 3 )" ) -> 7
      *	         evaluate( "( + 4 ( * 2 5 ) 3 )" ) -> 17
      ******************************************************/
-    public static String evaluate( String expr ) 
-    {
+    public static String evaluate( String expr ) {
+	return "";
     }//end evaluate()
 
 
     /****************************************************** 
-     * precond:  Assumes top of input stack is a number.
-     * postcond: Performs op on nums until closing paren is seen thru peek().
-     *           Returns the result of operating on sequence of operands.
-     *           Ops: + is 1, - is 2, * is 3
+     * precond:  Assumes top of input stack is an operation.
+     * postcond: Performs op on nums successively until the stack is empty.
+     *           Returns the result of operation on sequence of operands as a number in String form.
      ******************************************************/
-    public static String unload( int op, Stack<String> numbers ) 
-    {
+    public static String unload( Stack<String> numbers ) {
+	    
     }//end unload()
 
 
-    /*
-    //optional check-to-see-if-its-a-number helper fxn:
     public static boolean isNumber( String s ) {
         try {
 	    Integer.parseInt(s);
@@ -49,7 +51,7 @@ public class Scheme {
 	    return false;
 	}
     }
-    */
+
 
 
     //main method for testing
