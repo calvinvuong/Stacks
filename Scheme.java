@@ -25,25 +25,43 @@ public class Scheme {
      * postcond: Returns the simplified value of the expression, as a String
      * eg,
      *           evaluate( "( + 4 3 )" ) -> 7
-     *	         evaluate( "( + 4 ( * 2 5 ) 3 )" ) -> 17
+     *	         evaluate( "( + 4 ( * 2 52 ) 3 )" ) -> 17
      ******************************************************/
     public static String evaluate( String expr ) {
-	Stack<String> mainStack = new LLStack<String>();
+	LLStack<String> mainStack = new LLStack<String>();
 
+	//parse expr for numbers, operations, parentheses
 	for ( int i = 0; i < expr.length(); i++ ){
-	    String chr = expr.substring(i,i+1);
-	    // put elements below ) until open ( into a new stack to feed into unload()
-	    if ( chr.equals(")") ) {
-		Stack<String> miniStack = new LLStack<String>();
-		while ( ! mainStack.peek().equals("(") ){
-		    miniStack.push( mainStack.pop() );
-		} // at exit, this parenthes is stored to be evaluated
-		mainStack.pop(); // remove open parens
-		mainStack.push( unload(miniStack) ); // push result of parens to stack
+	    String operations = "+-*", chars = expr.substring(i, i + 1);
+	    
+	    if ( chars.equals("(") || operations.indexOf(chars) > -1)
+		mainStack.push(chars);
+
+	    //while loop to sort through consecutive numeric values
+	    else if ( isNumber(chars) ) {
+		while ( isNumber(expr.substring(i + 1, i + 2)) ) {
+		    chars += expr.substring(i + 1, i + 2);
+		    i++;
+		}
+		System.out.println(chars);
+		mainStack.push(chars);
 	    }
-	    else
-		mainStack.push(chr);
-	}
+	    
+	    // put elements below ")" until the next "(" into a new stack
+	    // to feed into unload()
+	    else if ( chars.equals(")") ) {
+		LLStack<String> miniStack = new LLStack<String>();
+
+		while ( ! mainStack.peek().equals("(") ){
+		    miniStack.push(mainStack.pop());
+		} // at exit, this parenthesis is stored to be evaluated
+		mainStack.pop(); // remove open parens
+		// push result of parens to stack
+		mainStack.push( unload(miniStack) );
+	    }
+
+	} //end for-loop
+           
 	return mainStack.peek();
 
     }//end evaluate()
@@ -54,22 +72,30 @@ public class Scheme {
      * postcond: Performs op on nums successively until the stack is empty.
      *           Returns the result of operation on sequence of operands as a number in String form.
      ******************************************************/
-    public static String unload( Stack<String> numbers ) {
+    public static String unload( LLStack<String> numbers ) {
 	String operation = numbers.pop();
-	while ( size(numbers) >= 2 ){
+
+	while ( size(numbers) >= 2 ) {
+	   
 	    if ( operation.equals("+") )
-		numbers.push(Integer.toString( Integer.parseInt(numbers.pop()) + Integer.parseInt(numbers.pop())) );
+		numbers.push(Integer.toString( Integer.parseInt(numbers.pop()) +
+					       Integer.parseInt(numbers.pop())));
 	    else if ( operation.equals("-") )
-		numbers.push(Integer.toString( Integer.parseInt(numbers.pop()) - Integer.parseInt(numbers.pop())) );
+		numbers.push(Integer.toString( Integer.parseInt(numbers.pop()) -
+					       Integer.parseInt(numbers.pop())));
 	    else if ( operation.equals("*") )
-		numbers.push(Integer.toString( Integer.parseInt(numbers.pop()) * Integer.parseInt(numbers.pop())) );
+		numbers.push(Integer.toString( Integer.parseInt(numbers.pop()) *
+					       Integer.parseInt(numbers.pop())));
 	}
+	
 	return numbers.peek();
     }//end unload()
 
     // returns the size of input stack
-    public static int size( Stack<String> stack ) {
+    public static int size( LLStack<String> stack ) {
+	return stack.size();
     } // end size
+    
     public static boolean isNumber( String s ) {
         try {
 	    Integer.parseInt(s);
@@ -80,12 +106,9 @@ public class Scheme {
 	}
     }
 
-
-
     //main method for testing
     public static void main( String[] args ) {
 
-	/*v~~~~~~~~~~~~~~MAKE MORE~~~~~~~~~~~~~~v
 	String zoo1 = "( + 4 3 )";
 	System.out.println(zoo1);
 	System.out.println("zoo1 eval'd: " + evaluate(zoo1) );
@@ -105,6 +128,7 @@ public class Scheme {
 	System.out.println(zoo4);
 	System.out.println("zoo4 eval'd: " + evaluate(zoo4) );
 	//...-4
+	/*v~~~~~~~~~~~~~~MAKE MORE~~~~~~~~~~~~~~v
           ^~~~~~~~~~~~~~~~AWESOME~~~~~~~~~~~~~~~^*/
     }//main
 
