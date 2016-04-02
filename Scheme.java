@@ -12,8 +12,8 @@
       2. ...
       5. Profit!
  *
- * STACK OF CHOICE: ____ by Clyde ____
- * b/c ...
+ * STACK OF CHOICE: LLStack by Team
+ * b/c the implementation is simple.
  ******************************************************/
 
 public class Scheme {
@@ -28,7 +28,24 @@ public class Scheme {
      *	         evaluate( "( + 4 ( * 2 5 ) 3 )" ) -> 17
      ******************************************************/
     public static String evaluate( String expr ) {
-	return "";
+	Stack<String> mainStack = new LLStack<String>();
+
+	for ( int i = 0; i < expr.length(); i++ ){
+	    String chr = expr.substring(i,i+1);
+	    // put elements below ) until open ( into a new stack to feed into unload()
+	    if ( chr.equals(")") ) {
+		Stack<String> miniStack = new LLStack<String>();
+		while ( ! mainStack.peek().equals("(") ){
+		    miniStack.push( mainStack.pop() );
+		} // at exit, this parenthes is stored to be evaluated
+		mainStack.pop(); // remove open parens
+		mainStack.push( unload(miniStack) ); // push result of parens to stack
+	    }
+	    else
+		mainStack.push(chr);
+	}
+	return mainStack.peek();
+
     }//end evaluate()
 
 
@@ -38,10 +55,21 @@ public class Scheme {
      *           Returns the result of operation on sequence of operands as a number in String form.
      ******************************************************/
     public static String unload( Stack<String> numbers ) {
-	    
+	String operation = numbers.pop();
+	while ( size(numbers) >= 2 ){
+	    if ( operation.equals("+") )
+		numbers.push(Integer.toString( Integer.parseInt(numbers.pop()) + Integer.parseInt(numbers.pop())) );
+	    else if ( operation.equals("-") )
+		numbers.push(Integer.toString( Integer.parseInt(numbers.pop()) - Integer.parseInt(numbers.pop())) );
+	    else if ( operation.equals("*") )
+		numbers.push(Integer.toString( Integer.parseInt(numbers.pop()) * Integer.parseInt(numbers.pop())) );
+	}
+	return numbers.peek();
     }//end unload()
 
-
+    // returns the size of input stack
+    public static int size( Stack<String> stack ) {
+    } // end size
     public static boolean isNumber( String s ) {
         try {
 	    Integer.parseInt(s);

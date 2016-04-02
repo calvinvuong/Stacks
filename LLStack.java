@@ -19,6 +19,10 @@ public class LLStack<T> implements Stack<T> {
     public boolean isEmpty() {
 	return _stack.size() <= 0;
     }
+    
+    public int size() {
+	return _stack.size();
+    }
 
     public T peek() {
 	if ( isEmpty() ) return null;
