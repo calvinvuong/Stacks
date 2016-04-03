@@ -1,4 +1,4 @@
-// Team -- Alan Chen and Calvin Vuong
+// Team Pennybags -- Alan Chen and Calvin Vuong
 // APCS2 pd10
 // HW24 -- Schemin
 // 2016-04-04
@@ -8,12 +8,25 @@
  * Simulates a rudimentary Scheme interpreter
  *
  * ALGORITHM for EVALUATING A SCHEME EXPRESSION:
-      1. Steal underpants.
-      2. ...
-      5. Profit!
+      1. Parse the expr such that each loop iteration examines a significant character and removes whitespaces. (ie parentheses, operations, integers)
+      2. At each iteration through the expr string, examine the significant character you are looking at.
+           - If it is a closing parenthesis:
+                1. Pop the top element on the main stack and push it to a temporary stack.
+                2. Repeat until you reach an open parentheses on the main stack. Pop the open parentheses but do not push it to the temporary stack.
+                3. Feed the temporary stack into the unload() method. Algo here:
+                      1. pop() the first element of temp stack, which will give you the operation.
+                      2. While the size of the temp stack is >= 2:
+                            1. Execute pop() on the temp stack twice. This gives you the top two numbers.
+                            2. Perform the operation between the two numbers.
+                            3. Push the result back onto the temp stack.
+                      3. pop() and return the first (and only) element, which is the evaluated expression of what you fed unload().
+                4. Push the return value of the unload() method to the main stack.
+           - If it is not a closing parenthesis:
+                1. Push the significant character onto the main stack.
+      3. After you have finished looping through the expr string, return the top (and only) element of the main stack using peek(). This is the evaluated expression. 
  *
- * STACK OF CHOICE: LLStack by Team
- * b/c the implementation is simple.
+ * STACK OF CHOICE: LLStack by Team Pennybags
+ * b/c the implementation is simple and it uses a built-in Java library, making it more robust.
  ******************************************************/
 
 public class Scheme {
@@ -45,7 +58,7 @@ public class Scheme {
 		}
 		System.out.println(chars);
 		mainStack.push(chars);
-	    }
+	    } // end parsing
 	    
 	    // put elements below ")" until the next "(" into a new stack
 	    // to feed into unload()
