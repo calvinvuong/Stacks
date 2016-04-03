@@ -1,3 +1,8 @@
+// Team Pennybags -- Alan Chen and Calvin Vuong
+// APCS2 pd10
+// HW23 -- Leon Leonwood Stack
+// 2016-04-04
+
 /*****************************************************
  * class LLStack
  * Implements ADT stack as specified in local Stack.java
@@ -20,10 +25,6 @@ public class LLStack<T> implements Stack<T> {
 	return _stack.size() <= 0;
     }
     
-    public int size() {
-	return _stack.size();
-    }
-
     public T peek() {
 	if ( isEmpty() ) return null;
 	return _stack.getLast();
