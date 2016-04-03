@@ -18,5 +18,4 @@ public interface Stack<P> {
     //Push an element onto top of this stack.
     public void	push( P x );
     
-    public int size();
 }//end interface
