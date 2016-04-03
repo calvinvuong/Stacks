@@ -93,8 +93,20 @@ public class Scheme {
 
     // returns the size of input stack
     public static int size( LLStack<String> stack ) {
-	return stack.size();
+	int stackSize = 0;
+	LLStack<String> tmpStack = new LLStack<String>();
+	// count number of items
+	while ( ! stack.isEmpty() ){
+	    tmpStack.push(stack.pop());
+	    stackSize += 1;
+	}
+	// repopulate original stack
+	while ( ! tmpStack.isEmpty() ){
+	    stack.push(tmpStack.pop());
+	}
+	return stackSize;
     } // end size
+
     
     public static boolean isNumber( String s ) {
         try {
